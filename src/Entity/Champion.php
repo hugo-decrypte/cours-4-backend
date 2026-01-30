@@ -96,7 +96,7 @@ class Champion
     public function removeTeam(Team $team): static
     {
         $this->teams->removeElement($team);
-        return $this;
+          return $this;
     }
 
 }
