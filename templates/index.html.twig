@@ -1,0 +1,53 @@
+{# templates/votre_template.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Teams et Champions{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1 class="text-center mb-5">Affrontement des Teams</h1>
+
+        <div class="row">
+            {% for team in teams %}
+                <div class="col-md-6">
+                    <div class="card mb-4">
+                        <div class="card-header bg-primary text-white">
+                            <h3>{{ team.name }}</h3>
+                            <p class="mb-0">
+                                <strong>Pays :</strong> {{ team.country }}<br>
+                                <strong>Créée le :</strong> {{ team.createdAt ? team.createdAt|date('d/m/Y') : 'N/A' }}
+                            </p>
+                        </div>
+                        <div class="card-body">
+                            <h5>Champions ({{ team.champions|length }})</h5>
+
+                            {% if team.champions|length > 0 %}
+                                <ul class="list-group">
+                                    {# Limiter à 5 champions #}
+                                    {% for champion in team.champions|slice(0, 5) %}
+                                        <li class="list-group-item">
+                                            <strong>{{ champion.name }}</strong> - {{ champion.title }}
+                                            {% if champion.blurb %}
+                                                <p class="text-muted small mb-0">{{ champion.blurb|slice(0, 100) }}...</p>
+                                            {% endif %}
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <p class="text-muted">Aucun champion assigné à cette équipe.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        {# Afficher un message si moins de 2 teams #}
+        {% if teams|length < 2 %}
+            <div class="alert alert-warning text-center">
+                <strong>Attention !</strong> Il faut au moins 2 teams pour afficher l'affrontement.
+                Actuellement : {{ teams|length }} team(s) disponible(s).
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
